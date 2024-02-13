@@ -1,6 +1,6 @@
 import Head from '@/components/shared/Head';
 import { Link } from 'react-router-dom';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 export default function NotFoundScreen() {
   return (

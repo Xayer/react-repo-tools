@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import Router from '@/components/router/Router';
 import AuthProvider from '@/components/shared/AuthProvider';
 
@@ -10,11 +10,11 @@ export default function App() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <HashRouter>
           <AuthProvider>
             <Router />
           </AuthProvider>
-        </BrowserRouter>
+        </HashRouter>
       </QueryClientProvider>
     </HelmetProvider>
   );

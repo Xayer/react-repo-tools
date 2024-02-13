@@ -285,7 +285,6 @@ export const getCommentsFromPullRequest = async ({
   repository: string;
   pullRequestNumber: string;
 }) => {
-  console.log('TEST');
   return await fetch(
     `https://api.github.com/repos/${organization}/${repository}/issues/${pullRequestNumber}/comments`,
     {

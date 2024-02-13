@@ -2,7 +2,7 @@
 
 ### Todo
 
-- auth template, look into the different routes, and figure out why the styling is not loading
+- figure out why we cannot get the list of repos
 - [ ] get latest test report
 - [ ] get CPD- lists
 - [ ] add pagination to repositories (and possiblity filtering)

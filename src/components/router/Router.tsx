@@ -17,6 +17,16 @@ export default function Router() {
           element: <HomeScreen />,
         },
         {
+          path: ':organisation',
+          element: <HomeScreen />,
+          children: [
+            {
+              path: ':repository',
+              element: <HomeScreen />,
+            },
+          ],
+        },
+        {
           path: '*',
           element: <NotFoundScreen />,
         },

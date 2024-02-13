@@ -7,16 +7,9 @@ export default function HomeScreen() {
   return (
     <>
       <Head title="Home" />
-      <div className="hero md:bg-md flex flex-grow">
-        <div className="hero-overlay bg-opacity-60" />
+      <div className="hero">
         <div className="hero-content text-center text-neutral-content">
-          <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold">Hello there {userContext?.name}</h1>
-            <p className="mb-5">
-              Template for lightning-fast startups with instant hot module replacement and complex responsive layout
-              creation
-            </p>
-          </div>
+          <h1 className="mb-5 text-5xl font-bold">Hello there {userContext?.name}</h1>
         </div>
       </div>
     </>
