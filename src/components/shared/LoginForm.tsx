@@ -8,11 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { setToken } from '@/config';
+import { useNavigate } from 'react-router-dom';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [accessToken, setAccessToken] = React.useState<string>('');
+  const navigate = useNavigate();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -20,7 +24,9 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 50);
+    setToken(accessToken);
+    navigate('/');
   }
 
   return (
@@ -45,15 +51,16 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
                 id="accessToken"
                 placeholder="Access Token"
                 type="text"
+                onChange={(e) => setAccessToken(e.target.value)}
                 autoCapitalize="none"
                 autoComplete="text"
                 autoCorrect="off"
                 disabled={isLoading}
               />
             </div>
-            <Button disabled={isLoading}>
+            <Button disabled={isLoading} type="submit">
               {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-              Sign In with Email
+              Save
             </Button>
           </div>
         </form>

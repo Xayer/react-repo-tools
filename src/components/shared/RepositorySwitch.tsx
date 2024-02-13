@@ -71,15 +71,19 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
     return organization ? organization.charAt(0).toUpperCase() + organization.slice(1) : '';
   }, []);
 
-  const updateSearch = useCallback((event) => {
-    const value = event.target.value;
+  const updateSearch = useCallback((event: { target: HTMLInputElement }) => {
+    const value = event?.target.value;
     debounce(() => {
       setSearchQuery(value);
     }, 200)();
   }, []);
 
   const searchResults = useMemo(() => {
-    return searchQuery.length ? repositories?.map((repository) => repository.name) : [selectedRepository];
+    if (!selectedRepository && !repositories) {
+      return [];
+    }
+
+    return searchQuery.length > 0 ? repositories?.map((repository) => repository.name) : [selectedRepository];
   }, [repositories, searchQuery]);
 
   return (

@@ -1,4 +1,4 @@
-import LoginForm from './LoginForm';
+import LoginForm from '../shared/LoginForm';
 
 export default function AuthenticationPage() {
   return (

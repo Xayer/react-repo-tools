@@ -10,9 +10,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserContext } from './AuthProvider';
 import { useContext } from 'react';
+import { removeTokenFromStorage } from '@/config';
+import { useNavigate } from 'react-router-dom';
 
 export function UserNav() {
   const userData = useContext(UserContext);
+  const navigate = useNavigate();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,7 +34,14 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            removeTokenFromStorage();
+            navigate('/login');
+          }}
+        >
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

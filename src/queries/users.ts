@@ -6,6 +6,7 @@ export const useFetchCurrentUser = () => {
   const token = getTokenFromStorage();
   return useQuery({
     queryKey: ['currentUser', token],
+    retry: 0,
     queryFn: () => {
       return getAuthenticatedUser();
     },

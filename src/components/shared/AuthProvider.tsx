@@ -1,8 +1,8 @@
 import { ReactNode, Suspense, createContext, useMemo } from 'react';
-import LoginScreen from './LoginScreen';
 import { useFetchCurrentUser } from '@/queries/users';
 import Loading from './Loading';
 import { getAuthenticatedUser } from '@/api/github';
+import { Navigate } from 'react-router-dom';
 
 export const UserContext = createContext<Awaited<ReturnType<typeof getAuthenticatedUser>>['data'] | undefined>(
   undefined
@@ -17,7 +17,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   if (error) {
-    return <LoginScreen />;
+    return <Navigate to="/login" />;
   }
 
   return <UserContext.Provider value={userData}>{children}</UserContext.Provider>;
