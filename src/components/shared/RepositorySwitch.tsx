@@ -30,7 +30,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Check, ChevronsUpDown, Loader, PlusCircle } from 'lucide-react';
 import { useFetchSearchAllRepositoriesForOrganization } from '@/queries/repositories';
-import { useCallback, useEffect, useMemo } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>;
@@ -73,8 +73,8 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
     return organization ? organization.charAt(0).toUpperCase() + organization.slice(1) : '';
   }, []);
 
-  const updateSearch = useCallback((event: { target: HTMLInputElement }) => {
-    const value = event?.target.value;
+  const updateSearch = useCallback((event: FormEvent<HTMLInputElement>) => {
+    const value = (event.target as HTMLInputElement)?.value;
     debounce(() => {
       setSearchQuery(value);
     }, 200)();
@@ -111,7 +111,10 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command shouldFilter={false}>
-            <CommandInput placeholder="Search repository..." onInput={updateSearch}>
+            <CommandInput
+              placeholder="Search repository..."
+              onInput={(event: React.FormEvent<HTMLInputElement>) => updateSearch(event)}
+            >
               {isLoadingRespositories && <Loader className="ml-auto h-4 w-4" />}
             </CommandInput>
             <CommandList>
