@@ -35,7 +35,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
-interface OrganisationSwitchProps extends PopoverTriggerProps {}
+interface OrganisationSwitchProps extends PopoverTriggerProps {
+  className?: string;
+}
 
 export default function RepositorySwitch({ className }: OrganisationSwitchProps) {
   const [open, setOpen] = React.useState(false);
