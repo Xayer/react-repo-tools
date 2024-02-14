@@ -11,7 +11,7 @@ export default function Navigation({
 }: React.HTMLAttributes<HTMLElement> & { className?: string }) {
   const activeClass = 'bg-muted';
 
-  const linkClasses = ({ isActive }: { isActive: boolean }) => {
+  const linkClasses = ({ isActive }: { isActive?: boolean }) => {
     return cn(
       'text-sm font-medium hover:text-primary transition-colors py-1 rounded-full px-4',
       isActive ? activeClass : ''
@@ -19,8 +19,6 @@ export default function Navigation({
   };
 
   const { organization, repository } = useParams();
-
-  useResolvedPath('projects');
 
   return (
     <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)} {...props}>
@@ -30,6 +28,9 @@ export default function Navigation({
       <NavLink to={`./${organization}/${repository}/tags`} className={linkClasses}>
         Tags
       </NavLink>
+      <a href={`https://github.com/${organization}/${repository}`} className={linkClasses({})}>
+        Github
+      </a>
     </nav>
   );
 }
