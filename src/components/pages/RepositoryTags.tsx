@@ -1,6 +1,6 @@
 import { useFetchTags } from '@/queries/tags';
-import { ReactNode, useCallback, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
+import { NavLink, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Loading from '../shared/Loading';
 import { CheckCircle, Circle } from 'lucide-react';
 
@@ -8,7 +8,9 @@ export default function RepositoryTags() {
   const { organization, repository } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTagsKey = 'selected';
-  const [selectedTags, setSelectedTag] = useState<string[]>(searchParams.get('selectedTagsKey')?.split(',') || []);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedTags, setSelectedTag] = useState<string[]>(searchParams.get(selectedTagsKey)?.split(',') || []);
   const {
     data: tags,
     isLoading,
@@ -37,13 +39,31 @@ export default function RepositoryTags() {
     [selectedTags]
   );
 
-  const TagItem = ({ children }: { children: ReactNode; showCheckmark?: boolean }) => {
+  const goToTag = useCallback(
+    (tag: string) => {
+      navigate({
+        pathname: tag,
+        search: searchParams.toString(),
+      });
+    },
+    [location]
+  );
+
+  const TagItem = ({
+    children,
+    onClick,
+  }: {
+    children: ReactNode;
+    showCheckmark?: boolean;
+    onClick?: MouseEventHandler<HTMLDivElement>;
+  }) => {
     return (
-      <div className="space-y-1">
-        <a className="inline-flex items-center hover:bg-muted cursor-pointer whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-3 py-2 w-full justify-between">
-          {children}
-        </a>
-      </div>
+      <p
+        onClick={onClick}
+        className="hover:bg-muted flex-1 cursor-pointer whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-3 py-2 w-full"
+      >
+        {children}
+      </p>
     );
   };
   return (
@@ -62,14 +82,19 @@ export default function RepositoryTags() {
           {isError && <TagItem key="error">unable to fetch tags</TagItem>}
           {tags &&
             tags?.map((tag) => (
-              <TagItem showCheckmark key={tag.name}>
-                <>
-                  {tag.name}{' '}
-                  <button onClick={toggleValue(tag.name, !selectedTags.includes(tag.name))}>
-                    {selectedTags.includes(tag.name) ? <CheckCircle /> : <Circle />}
-                  </button>
-                </>
-              </TagItem>
+              <div className="justify-between flex items-center mb-2 gap-2" key={tag.name}>
+                <TagItem
+                  showCheckmark
+                  onClick={() => {
+                    goToTag(tag.name);
+                  }}
+                >
+                  {tag.name}
+                </TagItem>
+                <button onClick={toggleValue(tag.name, !selectedTags.includes(tag.name))}>
+                  {selectedTags.includes(tag.name) ? <CheckCircle /> : <Circle />}
+                </button>
+              </div>
             ))}
           {!isLoading && tags && tags.length === 0 && <TagItem key="no-tags">No tags</TagItem>}
         </div>
