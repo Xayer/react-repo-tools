@@ -1,44 +1,46 @@
-import { lazy, Suspense } from 'react';
-import { RouteObject, useRoutes } from 'react-router-dom';
-import Loading from '@/components/shared/Loading';
 import Layout from '../shared/Layout';
 import Login from '../pages/Login';
+import AuthProvider from '../shared/AuthProvider';
+import { createHashRouter } from 'react-router-dom';
+import { lazy } from 'react';
 
 const HomeScreen = lazy(() => import('@/components/pages/Home'));
 const NotFoundScreen = lazy(() => import('@/components/pages/NotFound'));
+const RepositoryScreen = lazy(() => import('@/components/pages/Repository'));
+const RepositoryTagsScreen = lazy(() => import('@/components/pages/RepositoryTags'));
 
-export default function Router() {
-  const routes: RouteObject[] = [
-    {
-      path: '/',
-      element: <Layout />,
-      children: [
-        {
-          index: true,
-          element: <HomeScreen />,
-        },
-        {
-          path: ':organisation',
-          element: <HomeScreen />,
-          children: [
-            {
-              path: ':repository',
-              element: <HomeScreen />,
-            },
-          ],
-        },
-        {
-          path: '*',
-          element: <NotFoundScreen />,
-        },
-      ],
-    },
-    {
-      path: 'login',
-      element: <Login />,
-    },
-  ];
-  const element = useRoutes(routes);
+export const Router = createHashRouter([
+  {
+    path: '/',
+    element: (
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    ),
 
-  return <Suspense fallback={<Loading />}>{element}</Suspense>;
-}
+    children: [
+      {
+        index: true,
+        element: <HomeScreen />,
+      },
+      {
+        path: '/:organisation/:repository',
+        element: <RepositoryScreen />,
+        children: [
+          {
+            path: 'tags',
+            element: <RepositoryTagsScreen />,
+          },
+        ],
+      },
+      {
+        path: '*',
+        element: <NotFoundScreen />,
+      },
+    ],
+  },
+  {
+    path: 'login',
+    element: <Login />,
+  },
+]);

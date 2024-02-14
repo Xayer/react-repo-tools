@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 export default function DashboardPage() {
   return (
     <>
-      <div className="hidden flex-col md:flex">
+      <div className="flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
             <RepositorySwitch /> <Navigation className="mx-6" />
@@ -16,7 +16,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-        <div className="h-screen my-2 mx-2 grid flex-col">
+        <div className="h-screen my-4 px-4 grid flex-col">
           <Outlet />
           <ReactQueryDevtools />
         </div>
