@@ -24,7 +24,7 @@ export const Router = createHashRouter([
         element: <HomeScreen />,
       },
       {
-        path: '/:organisation/:repository',
+        path: '/:organization/:repository',
         element: <RepositoryScreen />,
         children: [
           {
