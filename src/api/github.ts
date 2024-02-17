@@ -319,6 +319,20 @@ export const getAllRepositoriesForOrganization = async ({ organization }: { orga
   });
 };
 
+export const getRepository = async ({ organization, repository }: { organization: string; repository: string }) => {
+  return await fetch(`https://api.github.com/repos/${organization}/${repository}`, {
+    headers: {
+      Authorization: getGithubAuthHeader(),
+    },
+  }).then(async (response) => {
+    if (response.status === 200) {
+      return (await response.json()) as Repository;
+    } else {
+      throw new Error('Failed to get repository');
+    }
+  });
+};
+
 export const githubApiInstance = new Octokit({
   auth: getTokenFromStorage(),
 });

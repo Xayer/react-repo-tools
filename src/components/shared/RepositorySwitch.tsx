@@ -128,7 +128,7 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
                       navigate(`/${organization}/${repository}`);
                       setOpen(false);
                     }}
-                    className="text-sm cursor-pointer"
+                    className="text-base cursor-pointer"
                   >
                     <Avatar className="mr-2 h-5 w-5">
                       <AvatarFallback>{repository.charAt(0).toUpperCase()}</AvatarFallback>

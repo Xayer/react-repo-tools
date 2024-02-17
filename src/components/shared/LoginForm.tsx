@@ -22,18 +22,18 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
     event.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 50);
+    setIsLoading(false);
     setToken(accessToken);
+
     navigate('/');
+    window.location.reload();
   }
 
   return (
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">Github Access Token Required</h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-base text-muted-foreground">
           Create <a href="https://github.com/settings/tokens/new">a classic Github Access Token</a> and paste it.
           <br />
           <strong className="text-muted">Remember to enable SAML if required.</strong>
@@ -47,7 +47,7 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
                 Access Token
               </Label>
               <Input
-                className="bg-zinc-900 border-zinc-600"
+                className="bg-zinc-900 border-zinc-700"
                 id="accessToken"
                 placeholder="Access Token"
                 type="text"
@@ -70,7 +70,7 @@ export default function UserAuthForm({ className, ...props }: UserAuthFormProps)
               <p className="text-muted underline text-xs">Why an Access Token, instead of OAuth?</p>
             </PopoverTrigger>
             <PopoverContent className="w-80 bg-zinc-900 border-zinc-600">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 We store your Access Token in localStorage in the browser.
                 <br />
                 <br /> That way we can interact the Github API directly without a server.

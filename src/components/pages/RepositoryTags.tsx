@@ -1,6 +1,6 @@
 import { useFetchTags } from '@/queries/tags';
 import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Loading from '../shared/Loading';
 import { CheckCircle, Circle } from 'lucide-react';
 
@@ -60,7 +60,7 @@ export default function RepositoryTags() {
     return (
       <p
         onClick={onClick}
-        className="hover:bg-muted flex-1 cursor-pointer whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-3 py-2 w-full"
+        className="hover:bg-muted flex-1 cursor-pointer whitespace-nowrap rounded-md text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-secondary-foreground shadow-sm hover:bg-muted/80 h-9 px-3 py-2 w-full"
       >
         {children}
       </p>
@@ -71,7 +71,7 @@ export default function RepositoryTags() {
       <div className="space-y-4 w-56 max-h-max">
         <div className="mb-2 mr-4 flex justify-between items-center">
           <h2 className="text-lg font-semibold tracking-tight">Tags</h2>
-          <button className="text-sm hover:text-primary bg-muted rounded-full px-3 py-2">compare</button>
+          <button className="text-base hover:text-primary bg-muted rounded-full px-3 py-2">compare</button>
         </div>
         {isLoading && (
           <TagItem>
@@ -99,8 +99,8 @@ export default function RepositoryTags() {
           {!isLoading && tags && tags.length === 0 && <TagItem key="no-tags">No tags</TagItem>}
         </div>
       </div>
-      <div className="grow bg-muted w-100 h-100 p-4">
-        <pre>{JSON.stringify(selectedTags)}</pre>
+      <div className="grow w-100 h-100 p-4">
+        <Outlet />
       </div>
     </div>
   );

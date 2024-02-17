@@ -1,4 +1,4 @@
-import { getAllRepositoriesForOrganization, getAllRepositoriesFromOrganization } from '@/api/github';
+import { getAllRepositoriesForOrganization, getAllRepositoriesFromOrganization, getRepository } from '@/api/github';
 import { GithubOrdering } from '@/types/github';
 import { useQuery } from '@tanstack/react-query';
 
@@ -16,6 +16,26 @@ export const useFetchAllRepositoriesForOrganization = ({
       return await getAllRepositoriesForOrganization({ organization });
     },
     enabled,
+  });
+};
+
+export const useFetchRepository = ({
+  organization,
+  repository,
+  enabled,
+}: {
+  organization: string;
+  repository: string;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ['repository', organization, repository],
+    queryFn: ({ queryKey: [, organization, repository] }) => {
+      return getRepository({ organization, repository });
+    },
+    refetchOnWindowFocus: false,
+    enabled,
+    retry: 1,
   });
 };
 

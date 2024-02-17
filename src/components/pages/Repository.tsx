@@ -1,10 +1,7 @@
-import { Outlet } from 'react-router-dom';
+import { useContext } from 'react';
+import { RepositoryContext } from '../shared/RepositoryLayout';
 
 export default function Repository() {
-  return (
-    <div>
-      <h2 className="text-lg mb-2 font-semibold tracking-tight">Repository</h2>
-      <Outlet />
-    </div>
-  );
+  const repositoryContext = useContext(RepositoryContext);
+  return <p>{repositoryContext?.description}</p>;
 }

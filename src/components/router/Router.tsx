@@ -3,6 +3,7 @@ import Login from '../pages/Login';
 import AuthProvider from '../shared/AuthProvider';
 import { createHashRouter } from 'react-router-dom';
 import { lazy } from 'react';
+import RepositoryLayout from '@/components/shared/RepositoryLayout';
 
 const HomeScreen = lazy(() => import('@/components/pages/Home'));
 const NotFoundScreen = lazy(() => import('@/components/pages/NotFound'));
@@ -31,8 +32,12 @@ export const Router = createHashRouter([
       },
       {
         path: '/:organization/:repository',
-        element: <RepositoryScreen />,
+        element: <RepositoryLayout />,
         children: [
+          {
+            index: true,
+            element: <RepositoryScreen />,
+          },
           {
             path: 'tags',
             element: <RepositoryTagsScreen />,
@@ -46,13 +51,13 @@ export const Router = createHashRouter([
         ],
       },
       {
+        path: 'login',
+        element: <Login />,
+      },
+      {
         path: '*',
         element: <NotFoundScreen />,
       },
     ],
-  },
-  {
-    path: 'login',
-    element: <Login />,
   },
 ]);

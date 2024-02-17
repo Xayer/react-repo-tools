@@ -12,11 +12,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const { isLoading, error, data } = useFetchCurrentUser();
   const userData = useMemo(() => data?.data || undefined, [data]);
 
+  const currentPage = window.location.hash;
+
   if (isLoading) {
     return <Suspense fallback={<Loading />} />;
   }
 
-  if (error) {
+  if (error && !currentPage.includes('/login')) {
     return <Navigate to="/login" />;
   }
 
