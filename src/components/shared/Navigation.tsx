@@ -28,6 +28,9 @@ export default function Navigation({
       <NavLink to={`./${organization}/${repository}/tags`} className={linkClasses}>
         Tags
       </NavLink>
+      <NavLink to="/mocks" className={linkClasses} end>
+        Mocks
+      </NavLink>
       <a href={`https://github.com/${organization}/${repository}`} className={linkClasses({})}>
         Github
       </a>
