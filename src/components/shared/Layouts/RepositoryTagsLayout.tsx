@@ -99,7 +99,7 @@ export default function RepositoryTags() {
           {!isLoading && tags && tags.length === 0 && <TagItem key="no-tags">No tags</TagItem>}
         </div>
       </div>
-      <div className="grow w-100 h-100 p-4">
+      <div className="grow w-100 h-100 px-4">
         <Outlet />
       </div>
     </div>

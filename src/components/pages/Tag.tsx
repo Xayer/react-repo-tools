@@ -1,8 +1,10 @@
 import { useFetchPullRequestCommentsWithTests, useFetchPullRequestFromRefTag } from '@/queries/pullRequests';
 import { useParams } from 'react-router-dom';
 import Loading from '../shared/Loading';
-import { useMemo } from 'react';
+import { createRef, useMemo } from 'react';
 import { Comment } from '@/api/github';
+import { copyToClipboard } from '@/lib/utils';
+import { Copy } from 'lucide-react';
 
 export default function Tag() {
   const { tag: currentTag, repository, organization } = useParams();
@@ -77,10 +79,16 @@ export default function Tag() {
     return <div>Unable to fetch tag</div>;
   }
 
+  const ref = createRef<HTMLPreElement>();
+
+  const copyTextFromDescription = () => {
+    copyToClipboard(ref.current?.innerText as string);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg">{currentTag}</h3>
+        <h2 className="text-2xl">{currentTag}</h2>
         <nav className="flex gap-1">
           {pullRequestLink && (
             <a className="underline" href={pullRequestLink}>
@@ -99,8 +107,13 @@ export default function Tag() {
           )}
         </nav>
       </div>
-      <h2 className="text-xl mb-1">Changelog (Markdown): </h2>
-      <pre className="text-wrap max-w-prose">
+      <h2 className="text-xl mb-3 flex items-center justify-start gap-2">
+        Changelog (Markdown){' '}
+        <button onClick={copyTextFromDescription}>
+          <Copy />
+        </button>
+      </h2>
+      <pre ref={ref} className="text-wrap max-w-prose">
         - {currentTag}: {jiraTasks?.join(', ')} [Test Report]({testReports?.at(-1)})
         {pullRequestChanges && (
           <ul className="flex flex-col">
