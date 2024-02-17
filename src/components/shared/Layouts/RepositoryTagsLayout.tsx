@@ -1,7 +1,7 @@
 import { useFetchTags } from '@/queries/tags';
 import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import Loading from '../shared/Loading';
+import Loading from '../Loading';
 import { CheckCircle, Circle } from 'lucide-react';
 
 export default function RepositoryTags() {

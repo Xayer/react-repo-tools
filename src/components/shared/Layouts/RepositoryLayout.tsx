@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { useFetchRepository } from '@/queries/repositories';
 import { createContext } from 'react';
 import { getRepository } from '@/api/github';
-import Loading from './Loading';
+import Loading from '../Loading';
 
 export const RepositoryContext = createContext<Awaited<ReturnType<typeof getRepository>> | undefined>(undefined);
 
@@ -58,7 +58,7 @@ export default function RepositoryLayout() {
               <NavLink to={`/${organization}/${repository}`} className={linkClasses} end>
                 Overview
               </NavLink>
-              <NavLink to="./tags" className={linkClasses}>
+              <NavLink to={`/${organization}/${repository}/tags`} className={linkClasses}>
                 Tags
               </NavLink>
             </>

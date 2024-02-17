@@ -142,7 +142,7 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
               </CommandGroup>
             </CommandList>
             <CommandSeparator />
-            <CommandList>
+            {/* <CommandList>
               <CommandGroup>
                 <DialogTrigger asChild>
                   <CommandItem
@@ -156,7 +156,7 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
-            </CommandList>
+            </CommandList> */}
           </Command>
         </PopoverContent>
       </Popover>

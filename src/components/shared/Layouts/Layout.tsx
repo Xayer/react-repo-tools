@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Navigation from './Navigation';
+import Navigation from '../Navigation';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function DashboardPage() {
