@@ -1,7 +1,8 @@
-import { useFetchPullRequestFromRefTag } from '@/queries/pullRequests';
+import { useFetchPullRequestCommentsWithTests, useFetchPullRequestFromRefTag } from '@/queries/pullRequests';
 import { useParams } from 'react-router-dom';
 import Loading from '../shared/Loading';
 import { useMemo } from 'react';
+import { Comment } from '@/api/github';
 
 export default function Tag() {
   const { tag: currentTag, repository, organization } = useParams();
@@ -17,6 +18,14 @@ export default function Tag() {
     enabled: !!organization && !!repository && !!currentTag,
   });
 
+  const pullRequestNumber = useMemo(() => {
+    return pullRequestData?.number.toString();
+  }, [pullRequestData]);
+
+  const shouldFetchData = useMemo(() => {
+    return !!organization && !!repository && !!pullRequestNumber;
+  }, [organization, repository, pullRequestNumber]);
+
   const pullRequestLink = useMemo(() => (!pullRequestData ? null : pullRequestData?.html_url), [pullRequestData]);
 
   const jiraTasks = useMemo(() => {
@@ -24,7 +33,7 @@ export default function Tag() {
   }, []);
   const pullRequestChanges = useMemo(() => {
     if (!pullRequestData?.body) return null;
-    const spacingRegex = /\\n|\\r|- /gm;
+    const spacingRegex = /\\n|\\r|- |\n/gm;
 
     const regex = /Changes in this PR:\r\n\r\n([\s\S]*?)(?=✂|$)/;
     const match = pullRequestData?.body.match(regex);
@@ -33,6 +42,32 @@ export default function Tag() {
       return change.replace(spacingRegex, '').trim().length > 0;
     });
   }, [pullRequestData]);
+
+  const { data: commentsWithTests } = useFetchPullRequestCommentsWithTests({
+    organization: organization as string,
+    repository: repository as string,
+    pullRequestNumber: pullRequestNumber as string,
+    enabled: shouldFetchData,
+  });
+
+  const testReports = useMemo(() => {
+    const comments: Comment[] = commentsWithTests as Comment[];
+
+    if (!comments || comments?.length === 0) return null;
+
+    return commentsWithTests?.map((comment) => {
+      const matches = comment.body.match(/Allure report: (.*)/);
+      return matches ? matches[1] : false;
+    });
+  }, [commentsWithTests]);
+
+  const versionLink = useMemo(
+    () =>
+      !!organization && !!repository && !!currentTag
+        ? `https://github.com/${organization}/${repository}/releases/tag/${currentTag}`
+        : null,
+    [organization, repository, currentTag]
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -44,21 +79,29 @@ export default function Tag() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex max-w-prose items-center justify-between">
+      <div className="flex items-center justify-between mb-3">
         <h3 className="text-lg">{currentTag}</h3>
-        <nav>
+        <nav className="flex gap-1">
           {pullRequestLink && (
             <a className="underline" href={pullRequestLink}>
               Pull Request
             </a>
           )}
+          {testReports && (
+            <a className="underline" href={testReports.at(-1) as string}>
+              Test Report
+            </a>
+          )}
+          {versionLink && (
+            <a className="underline" href={versionLink}>
+              {currentTag}
+            </a>
+          )}
         </nav>
       </div>
-      <pre className="text-wrap">
-        {jiraTasks?.map((task) => (
-          <div key={task}>{task}</div>
-        ))}
-
+      <h2 className="text-xl mb-1">Changelog (Markdown): </h2>
+      <pre className="text-wrap max-w-prose">
+        - {currentTag}: {jiraTasks?.join(', ')} [Test Report]({testReports?.at(-1)})
         {pullRequestChanges && (
           <ul className="flex flex-col">
             {pullRequestChanges
