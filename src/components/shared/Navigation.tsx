@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { NavLink, useParams, useResolvedPath } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 export default function Navigation({
   className,
