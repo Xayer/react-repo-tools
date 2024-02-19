@@ -15,7 +15,7 @@ export default function MockItem({ partner }: { partner: string }) {
         <i className="w-4 h-4 mr-2 text-primary">{isFetching && <Loader2 className="animate-spin" />}</i>
         {partner.charAt(0).toUpperCase() + partner.slice(1)}:
       </div>{' '}
-      <div className={cn('flex', isEnabled ? 'text-secondary' : 'text-destructive')}>
+      <div className={cn('flex', isEnabled ? 'text-destructive' : 'text-secondary')}>
         {partnerMock?.target === 'PROXY' ? <Check /> : <X />}
       </div>
     </div>

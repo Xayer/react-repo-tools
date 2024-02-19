@@ -8,7 +8,7 @@ export default function Mocks() {
       <table>
         <tr>
           <th>Partner</th>
-          <th>Enabled</th>
+          <th>Is mocked</th>
         </tr>
         <tbody>
           <tr>
