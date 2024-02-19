@@ -3,9 +3,13 @@
 ### Todo
 
 - figure out why we cannot get the list of repos
-- [ ] get latest test report
-- [ ] get CPD- lists
-- [ ] add pagination to repositories (and possiblity filtering)
+- [x] get latest test report
+- [x] get CPD- lists
+- [x] add pagination to repositories (and possiblity filtering)
+- [x] add search to tags to filter based on service name if needed
+  - nebula core exposes different services as tags with a prefix. Eg. account-service is account-service/vX.Y.Z
+- [ ] selected tags feature
+  - gather multiple tags in a single report
 - [ ] favourite repositories/organisations?
 - [ ] get list of PRs still in progress
   - create a checklist of:
@@ -22,4 +26,3 @@
       - to prod
     - get list of all translation keys, from a PR, so we can see if the translation keys are entered on all languages
   - parse BE template: https://github.com/cardlay/nebula-core/pull/326
-  -
