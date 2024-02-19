@@ -7,7 +7,7 @@ export default function MockItem({ partner }: { partner: string }) {
     partner,
   });
 
-  const isEnabled = partnerMock?.target === 'PROXY';
+  const isEnabled = partnerMock?.target !== 'PROXY';
 
   return (
     <div className="flex justify-between gap-1">
