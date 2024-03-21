@@ -7,7 +7,9 @@
 - [x] get CPD- lists
 - [x] add pagination to repositories (and possiblity filtering)
 - [x] add search to tags to filter based on service name if needed
-  - nebula core exposes different services as tags with a prefix. Eg. account-service is account-service/vX.Y.Z
+- [ ] see which PR is deployed to dev (web only)
+- [x] When fetching list of tickets, use a set to remove duplicates
+- nebula core exposes different services as tags with a prefix. Eg. account-service is account-service/vX.Y.Z
 - [ ] selected tags feature
   - gather multiple tags in a single report
 - [ ] favourite repositories/organisations?
