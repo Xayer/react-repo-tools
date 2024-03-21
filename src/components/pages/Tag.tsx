@@ -31,10 +31,9 @@ export default function Tag() {
   const pullRequestLink = useMemo(() => (!pullRequestData ? null : pullRequestData?.html_url), [pullRequestData]);
 
   const jiraTasks = useMemo(() => {
-    return pullRequestData?.body ? pullRequestData?.body.match(/([A-Z]+-\d+)/g) : null;
+    return [...new Set(pullRequestData?.body ? pullRequestData?.body.match(/([A-Z]+-\d+)/g) : null)];
   }, [pullRequestData?.body]);
 
-  console.log(jiraTasks);
   const pullRequestChanges = useMemo(() => {
     if (!pullRequestData?.body) return null;
     const spacingRegex = /\\n|\\r|- |\n/gm;
