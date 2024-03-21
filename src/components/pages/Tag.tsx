@@ -32,7 +32,9 @@ export default function Tag() {
 
   const jiraTasks = useMemo(() => {
     return pullRequestData?.body ? pullRequestData?.body.match(/([A-Z]+-\d+)/g) : null;
-  }, []);
+  }, [pullRequestData?.body]);
+
+  console.log(jiraTasks);
   const pullRequestChanges = useMemo(() => {
     if (!pullRequestData?.body) return null;
     const spacingRegex = /\\n|\\r|- |\n/gm;
@@ -114,12 +116,12 @@ export default function Tag() {
         </button>
       </h2>
       <pre ref={ref} className="text-wrap max-w-prose">
-        - {currentTag}: {jiraTasks?.join(', ')} [Test Report]({testReports?.at(-1)})
+        - {currentTag}: {jiraTasks?.join(', ')} {testReports && `[Test Report](${testReports?.at(-1)})`}
         {pullRequestChanges && (
           <ul className="flex flex-col">
             {pullRequestChanges
               .map((change) => {
-                return <li key={change}> - {change}</li>;
+                return <li key={change}>{`  - ${change}`}</li>;
               })
               .filter(Boolean)}
           </ul>
