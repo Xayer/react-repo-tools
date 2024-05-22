@@ -7,17 +7,18 @@
 - [x] get CPD- lists
 - [x] add pagination to repositories (and possiblity filtering)
 - [x] add search to tags to filter based on service name if needed
-- [ ] see which PR is deployed to dev (web only)
 - [x] When fetching list of tickets, use a set to remove duplicates
 - nebula core exposes different services as tags with a prefix. Eg. account-service is account-service/vX.Y.Z
 - [ ] selected tags feature
   - gather multiple tags in a single report
+- [ ] see which PR is deployed to dev (get all prs with the label)
 - [ ] favourite repositories/organisations?
+- [ ] show a page that warns if versions are not up to date on production
 - [ ] get list of PRs still in progress
   - create a checklist of:
     - repo checks
       - has the repo passed all checks?
-    - repo has been reviewed
+    - pr has been reviewed
       - take repo settings into account regarding stale reviews
     - repo has passed e2e
       - look at the amount of failing tests, and remember to check if it's been run multiple times
