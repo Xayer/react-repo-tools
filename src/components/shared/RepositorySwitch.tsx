@@ -21,14 +21,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Check, ChevronsUpDown, Loader, PlusCircle } from 'lucide-react';
+import { Check, ChevronsUpDown, Loader } from 'lucide-react';
 import { useFetchSearchAllRepositoriesForOrganization } from '@/queries/repositories';
 import { FormEvent, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -97,7 +96,7 @@ export default function RepositorySwitch({ className }: OrganisationSwitchProps)
             role="combobox"
             aria-expanded={open}
             aria-label="Select a repository"
-            className={cn('w-[200px] justify-between', className)}
+            className={cn('w-[200px] justify-between overflow-hidden', className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarFallback>{selectedRepository.charAt(0).toUpperCase()}</AvatarFallback>
