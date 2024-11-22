@@ -10,6 +10,8 @@
 - [x] When fetching list of tickets, use a set to remove duplicates
 - nebula core exposes different services as tags with a prefix. Eg. account-service is account-service/vX.Y.Z
 - [ ] selected tags feature
+  - [x] Extract all useMemo's to functions so they can be re-used on the Tags page.
+  - [ ] Show collection of tags so we can start to make a report of the selected tags.
   - gather multiple tags in a single report
 - [ ] see which PR is deployed to dev (get all prs with the label)
 - [ ] favourite repositories/organisations?

@@ -31,6 +31,8 @@ export default function Navigation({
           <NavLink to="/mocks" className={linkClasses} end>
             Mocks
           </NavLink>
+          <a href="https://studious-succotash-9d5471f6.pages.github.io/">Gateway Docs</a>
+          <a href="https://queue-manager.dev.cardlay.io/ui/home">E2E Queue</a>
         </nav>
         <div className="ml-2 flex items-center space-x-4">
           {userContext ? (

@@ -5,6 +5,14 @@ import { createRef, useMemo } from 'react';
 import { Comment } from '@/api/github';
 import { copyToClipboard } from '@/lib/utils';
 import { Copy } from 'lucide-react';
+import {
+  getChangesFromPullRequestBody,
+  getJiraTasksFromPullRequestBody,
+  getPullRequestLink,
+  getPullRequestNumber,
+  getPullRequestTagLink,
+  getTestReportsFromPullRequestComments,
+} from '@/utils/tags';
 
 export default function Tag() {
   const { tag: currentTag, repository, organization } = useParams();
@@ -21,30 +29,18 @@ export default function Tag() {
   });
 
   const pullRequestNumber = useMemo(() => {
-    return pullRequestData?.number.toString();
+    return getPullRequestNumber(pullRequestData);
   }, [pullRequestData]);
 
   const shouldFetchData = useMemo(() => {
     return !!organization && !!repository && !!pullRequestNumber;
   }, [organization, repository, pullRequestNumber]);
 
-  const pullRequestLink = useMemo(() => (!pullRequestData ? null : pullRequestData?.html_url), [pullRequestData]);
+  const pullRequestLink = useMemo(() => getPullRequestLink(pullRequestData), [pullRequestData]);
 
-  const jiraTasks = useMemo(() => {
-    return [...new Set(pullRequestData?.body ? pullRequestData?.body.match(/([A-Z]+-\d+)/g) : null)];
-  }, [pullRequestData?.body]);
+  const jiraTasks = useMemo(() => getJiraTasksFromPullRequestBody(pullRequestData), [pullRequestData]);
 
-  const pullRequestChanges = useMemo(() => {
-    if (!pullRequestData?.body) return null;
-    const spacingRegex = /\\n|\\r|- |\n/gm;
-
-    const regex = /Changes in this PR:\r\n\r\n([\s\S]*?)(?=✂|$)/;
-    const match = pullRequestData?.body.match(regex);
-    const changes = (match && match[1]) || '';
-    return changes.split(spacingRegex).filter((change) => {
-      return change.replace(spacingRegex, '').trim().length > 0;
-    });
-  }, [pullRequestData]);
+  const pullRequestChanges = useMemo(() => getChangesFromPullRequestBody(pullRequestData), [pullRequestData]);
 
   const { data: commentsWithTests } = useFetchPullRequestCommentsWithTests({
     organization: organization as string,
@@ -53,22 +49,13 @@ export default function Tag() {
     enabled: shouldFetchData,
   });
 
-  const testReports = useMemo(() => {
-    const comments: Comment[] = commentsWithTests as Comment[];
-
-    if (!comments || comments?.length === 0) return null;
-
-    return commentsWithTests?.map((comment) => {
-      const matches = comment.body.match(/Allure report: (.*)/);
-      return matches ? matches[1] : false;
-    });
-  }, [commentsWithTests]);
+  const testReports = useMemo(
+    () => getTestReportsFromPullRequestComments(commentsWithTests as Comment[]),
+    [commentsWithTests]
+  );
 
   const versionLink = useMemo(
-    () =>
-      !!organization && !!repository && !!currentTag
-        ? `https://github.com/${organization}/${repository}/releases/tag/${currentTag}`
-        : null,
+    () => getPullRequestTagLink(organization as string, repository as string, currentTag as string),
     [organization, repository, currentTag]
   );
 
@@ -114,8 +101,9 @@ export default function Tag() {
           <Copy />
         </button>
       </h2>
-      <pre ref={ref} className="text-wrap max-w-prose">
-        - {currentTag}: {jiraTasks?.join(', ')} {testReports && `[Test Report](${testReports?.at(-1)})`}
+      <pre ref={ref} className="text-wrap max-w-prose w-full p-2 py-4">
+        - {currentTag}: {jiraTasks?.join(', ')}{' '}
+        {testReports && testReports?.length > 0 && `[Test Report](${testReports?.at(-1)})`}
         {pullRequestChanges && (
           <ul className="flex flex-col">
             {pullRequestChanges

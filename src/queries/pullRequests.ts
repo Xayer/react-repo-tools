@@ -1,5 +1,5 @@
 import { getCommentsFromPullRequest, getIssuesFromCommit, getRefTag, getTag } from '@/api/github';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 
 export const useFetchPullRequestFromRefTag = ({
   organization,
@@ -31,6 +31,34 @@ export const useFetchPullRequestFromRefTag = ({
   });
 };
 
+export const useFetchPullRequestData = (selectedTags: string[], organization: string, repository: string) => {
+  return useQueries({
+    queries: selectedTags.map((tag) => ({
+      queryKey: ['PrFromRefTag', organization, repository, tag],
+      refetchOnWindowFocus: false,
+      queryFn: async () =>
+        await getRefTag({ organization, repository, tag })
+          .then(({ object: { sha: refSha } }) =>
+            getTag({ organization, repository, tag: refSha }).then((tag) =>
+              getIssuesFromCommit({
+                organization,
+                repository,
+                commit: tag.object.sha,
+              })
+            )
+          )
+          .then(({ items: [pullRequest] }) => pullRequest),
+    })),
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data),
+        pending: results.some((result) => result.isPending),
+        error: results.some((result) => result.isError),
+      };
+    },
+  });
+};
+
 export const useFetchPullRequestCommentsWithTests = ({
   organization,
   repository,
@@ -51,5 +79,37 @@ export const useFetchPullRequestCommentsWithTests = ({
         repository: repository as string,
         pullRequestNumber: pullRequestNumber as string,
       }),
+  });
+};
+
+export const useFetchPullRequestsCommentsWithTests = ({
+  pullRequestNumbers,
+  organization,
+  repository,
+  enabled,
+}: {
+  pullRequestNumbers: string[];
+  organization: string;
+  repository: string;
+  enabled: boolean;
+}) => {
+  return useQueries({
+    queries: pullRequestNumbers.map((pullRequestNumber) => ({
+      queryKey: ['CommentsFromPullRequest', organization, repository, pullRequestNumber],
+      enabled,
+      queryFn: () =>
+        getCommentsFromPullRequest({
+          organization: organization as string,
+          repository: repository as string,
+          pullRequestNumber: pullRequestNumber as string,
+        }),
+    })),
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data),
+        pending: results.some((result) => result.isPending),
+        error: results.some((result) => result.isError),
+      };
+    },
   });
 };

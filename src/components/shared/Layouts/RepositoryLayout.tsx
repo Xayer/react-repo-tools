@@ -1,9 +1,10 @@
 import { NavLink, Outlet, useParams } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useFetchRepository } from '@/queries/repositories';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import { getRepository } from '@/api/github';
 import Loading from '../Loading';
+import { UserContext } from '../AuthProvider';
 
 export const RepositoryContext = createContext<Awaited<ReturnType<typeof getRepository>> | undefined>(undefined);
 
@@ -18,6 +19,7 @@ export default function RepositoryLayout() {
   };
 
   const { organization, repository } = useParams();
+  const userContext = useContext(UserContext);
 
   const {
     data: repositoryData,
@@ -61,6 +63,7 @@ export default function RepositoryLayout() {
               <NavLink to={`/${organization}/${repository}/tags`} className={linkClasses}>
                 Tags
               </NavLink>
+              <a href={`https://github.com/${organization}/${repository}/pulls/${userContext?.login}`}>PRs</a>
             </>
           )}
         </nav>

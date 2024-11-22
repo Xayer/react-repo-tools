@@ -10,6 +10,7 @@ const NotFoundScreen = lazy(() => import('@/components/pages/NotFound'));
 const RepositoryScreen = lazy(() => import('@/components/pages/Repository'));
 const RepositoryTagsScreen = lazy(() => import('@/components/shared/Layouts/RepositoryTagsLayout'));
 const TagScreen = lazy(() => import('@/components/pages/Tag'));
+const TagsScreen = lazy(() => import('@/components/pages/Tags'));
 const MocksScreen = lazy(() => import('@/components/pages/Mocks'));
 
 export const Router = createHashRouter([
@@ -42,6 +43,10 @@ export const Router = createHashRouter([
             path: 'tags',
             element: <RepositoryTagsScreen />,
             children: [
+              {
+                path: 'selected',
+                element: <TagsScreen />,
+              },
               {
                 path: ':tag',
                 element: <TagScreen />,

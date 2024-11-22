@@ -3,11 +3,12 @@ import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Loading from '../Loading';
 import { CheckCircle, Circle } from 'lucide-react';
+export const selectedTagsKey = 'selected';
 
 export default function RepositoryTags() {
   const { organization, repository } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedTagsKey = 'selected';
+
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTags, setSelectedTag] = useState<string[]>(searchParams.get(selectedTagsKey)?.split(',') || []);
@@ -71,7 +72,17 @@ export default function RepositoryTags() {
       <div className="space-y-4 w-56 max-h-max">
         <div className="mb-2 mr-4 flex justify-between items-center">
           <h2 className="text-lg font-semibold tracking-tight">Tags</h2>
-          <button className="text-base hover:text-primary bg-muted rounded-full px-3 py-2">compare</button>
+          <button
+            className="text-base hover:text-primary bg-muted rounded-full px-3 py-2"
+            onClick={() =>
+              navigate({
+                pathname: 'selected',
+                search: searchParams.toString(),
+              })
+            }
+          >
+            compare
+          </button>
         </div>
         {isLoading && (
           <TagItem>
